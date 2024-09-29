@@ -29,4 +29,12 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+    
+    public static function userRepositoryInterface($getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('userRepositoryInterface');
+        }
+        return new \App\Repositories\UserRepository(); // Pastikan ini adalah implementasi yang benar
+    }
 }
