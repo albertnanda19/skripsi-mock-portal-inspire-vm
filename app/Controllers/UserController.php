@@ -27,4 +27,10 @@ class UserController extends BaseController
         $students = $this->userService->getStudentUsers();
         return Response::send(200, 'Success', $students);
     }
+
+    public function teachers()
+    {
+        $teachers = $this->userService->getDosenUsers();
+        return Response::send(200, 'Success', $teachers);
+    }
 }

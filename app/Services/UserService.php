@@ -17,4 +17,9 @@ class UserService
     {
         return $this->userRepository->getUsersByStudentRole();
     }
+
+    public function getDosenUsers(): array
+    {
+        return $this->userRepository->getUsersByDosenRole();
+    }
 }

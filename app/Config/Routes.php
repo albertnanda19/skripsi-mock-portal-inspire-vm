@@ -10,9 +10,9 @@ $routes->get('/', 'Home::index');
 $routes->group('api/v1', function($routes) {
     $routes->get('test', 'Home::test');
     $routes->post('login', 'AuthController::login');
-});
 
-$routes->group('api/v1', ['filter' => 'jwt'], function($routes) {
-    $routes->get('users/students', 'UserController::students'); 
-    $routes->get('secure', 'SecureController::index');
+    $routes->group('users', ['filter' => 'jwt'], function($routes) {
+        $routes->get('students', 'UserController::students'); 
+        $routes->get('teachers', 'UserController::teachers');
+    });
 });

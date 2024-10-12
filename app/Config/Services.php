@@ -35,6 +35,6 @@ class Services extends BaseService
         if ($getShared) {
             return static::getSharedInstance('userRepositoryInterface');
         }
-        return new \App\Repositories\UserRepository(); // Pastikan ini adalah implementasi yang benar
+        return new \App\Repositories\UserRepository(); 
     }
 }
