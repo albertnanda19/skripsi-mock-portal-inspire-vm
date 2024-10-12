@@ -19,18 +19,27 @@ class UserRepository implements UserRepositoryInterface
     
     public function getUserByUsername(string $username): ?UserEntity
     {
-        return $this->userModel->where('username', $username)->first();
+        $query = $this->db->query("SELECT * FROM users WHERE username = ?", [$username]);
+        return $query->getFirstRow(UserEntity::class);
     }
 
     
     public function getUsersByRole(string $roleId): array
     {
-        return $this->userModel->where('role_id', $roleId)->findAll();
+        $query = $this->db->query("SELECT * FROM users WHERE role_id = ?", [$roleId]);
+        return $query->getResultArray();
     }
 
     
     public function getUserByName(string $name): ?array
     {
-        return $this->userModel->where('name', $name)->findAll();
+        $query = $this->db->query("SELECT * FROM users WHERE name = ?", [$name]);
+        return $query->getResultArray();
+    }
+
+    public function getUsersByStudentRole(): array
+    {
+        $query = $this->db->query("SELECT u.user_id, u.name, u.username FROM users u JOIN roles r ON u.role_id = r.role_id WHERE r.role_name = 'mahasiswa'");
+        return $query->getResult(UserEntity::class); 
     }
 }

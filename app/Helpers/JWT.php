@@ -7,7 +7,7 @@ use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 
 class JWT
-{   
+{
     public static function generateTokens(array $claims): array
     {
         $config = Configuration::forAsymmetricSigner(
@@ -38,5 +38,31 @@ class JWT
             'access_token' => $access_token->toString(),
             'refresh_token' => $refresh_token->toString()
         ];
+    }
+
+    public static function validateToken(string $token): string
+    {
+        $config = Configuration::forAsymmetricSigner(
+            new Sha256(),
+            InMemory::file(ROOTPATH . 'private.key'), 
+            InMemory::file(ROOTPATH . 'public.key')
+        );
+
+        try {
+            $jwt = $config->parser()->parse($token);
+            $now = new \DateTimeImmutable();
+
+            if (!$config->validator()->validate($jwt, new \Lcobucci\JWT\Validation\Constraint\SignedWith($config->signer(), $config->verificationKey()))) {
+                return "Token tidak valid";
+            }
+
+            if ($jwt->isExpired($now)) {
+                return "Token sudah kadaluarsa";
+            }
+
+            return "Token valid";
+        } catch (\Exception $e) {
+            return "Token tidak valid";
+        }
     }
 }
