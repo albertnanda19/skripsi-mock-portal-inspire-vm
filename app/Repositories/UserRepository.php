@@ -42,4 +42,10 @@ class UserRepository implements UserRepositoryInterface
         $query = $this->db->query("SELECT u.user_id, u.name, u.username FROM users u JOIN roles r ON u.role_id = r.role_id WHERE r.role_name = 'mahasiswa'");
         return $query->getResult(UserEntity::class); 
     }
+
+    public function getUsersByDosenRole(): array
+    {
+        $query = $this->db->query("SELECT u.user_id, u.name, u.username FROM users u JOIN roles r ON u.role_id = r.role_id WHERE r.role_name = 'dosen'");
+        return $query->getResult(UserEntity::class); 
+    }
 }

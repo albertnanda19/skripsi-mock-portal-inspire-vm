@@ -12,9 +12,7 @@ $routes->group('api/v1', function($routes) {
     $routes->post('login', 'AuthController::login');
 });
 
-// Menambahkan routing group dengan JWTMiddleware
 $routes->group('api/v1', ['filter' => 'jwt'], function($routes) {
-    // Tambahkan rute yang memerlukan autentikasi di sini
-    $routes->get('users/students', 'StudentController::students'); 
+    $routes->get('users/students', 'UserController::students'); 
     $routes->get('secure', 'SecureController::index');
 });

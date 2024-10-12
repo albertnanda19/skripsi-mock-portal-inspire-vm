@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Repositories\UserRepository;
 
-class StudentService
+class UserService
 {
     protected $userRepository;
 

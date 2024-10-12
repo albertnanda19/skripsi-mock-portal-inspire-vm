@@ -10,5 +10,5 @@ interface UserRepositoryInterface
     public function getUsersByRole(string $roleId): array;
     public function getUserByName(string $name): ?array;
     public function getUsersByStudentRole(): array; 
-    
+    public function getUsersByDosenRole(): array;
 }
