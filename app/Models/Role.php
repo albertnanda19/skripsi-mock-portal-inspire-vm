@@ -9,7 +9,8 @@ class Role extends Model
     protected $table            = 'roles';
     protected $primaryKey       = 'role_id'; 
     protected $useAutoIncrement = false; 
-    protected $returnType       = 'array';
+    // protected $returnType       = 'array';
+    protected $returnType = 'App\Entities\RoleEntity';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = ['role_name']; 

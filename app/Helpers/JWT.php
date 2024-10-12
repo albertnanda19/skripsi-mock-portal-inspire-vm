@@ -8,7 +8,7 @@ use Lcobucci\JWT\Signer\Rsa\Sha256;
 
 class JWT
 {
-    public static function generateTokens(array $claims): array
+    public static function generateTokens(array $user): array
     {
         $config = Configuration::forAsymmetricSigner(
             new Sha256(),
@@ -23,7 +23,11 @@ class JWT
             ->issuedAt($now)
             ->canOnlyBeUsedAfter($now)
             ->expiresAt($now->modify('+30 minutes'))
-            ->withClaim('uid', $claims['uid'])
+            ->withClaim('id', $user['user_id'])
+            ->withClaim('name', $user['name'])
+            ->withClaim('username', $user['username'])
+            ->withClaim('role_id', $user['role_id'])
+            ->withClaim('token_type', 'access')
             ->getToken($config->signer(), $config->signingKey());
 
         $refresh_token = $config->builder()
@@ -31,7 +35,8 @@ class JWT
             ->permittedFor('https://unsrat.ac.id')
             ->issuedAt($now)
             ->expiresAt($now->modify('+7 days'))
-            ->withClaim('uid', $claims['uid'])
+            ->withClaim('id', $user['user_id'])
+            ->withClaim('token_type', 'refresh')
             ->getToken($config->signer(), $config->signingKey());
 
         return [

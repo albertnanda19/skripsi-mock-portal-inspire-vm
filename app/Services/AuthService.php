@@ -18,8 +18,13 @@ class AuthService
     {
         $user = $this->userRepository->getUserByUsername($username);
         if ($user && password_verify($password, $user->password)) {
-            $claims = ['uid' => $user->user_id];
-            return JWT::generateTokens($claims);
+            $userClaims = [
+                'user_id' => $user->user_id,
+                'name' => $user->name,
+                'username' => $user->username,
+                'role_id' => $user->role_id
+            ];
+            return JWT::generateTokens($userClaims);
         }
         return null;
     }
