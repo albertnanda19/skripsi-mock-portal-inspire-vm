@@ -7,8 +7,7 @@ use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
 
 class JWT
-{
-   
+{   
     public static function generateTokens(array $claims): array
     {
         $config = Configuration::forAsymmetricSigner(

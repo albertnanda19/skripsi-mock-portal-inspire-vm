@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Models\User;
 use App\Interfaces\UserRepositoryInterface;
+use App\Entities\UserEntity;
+
 class UserRepository implements UserRepositoryInterface 
 {
     protected $userModel;
@@ -15,7 +17,7 @@ class UserRepository implements UserRepositoryInterface
     }
 
     
-    public function getUserByUsername(string $username): ?array
+    public function getUserByUsername(string $username): ?UserEntity
     {
         return $this->userModel->where('username', $username)->first();
     }
