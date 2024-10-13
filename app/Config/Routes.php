@@ -15,4 +15,6 @@ $routes->group('api/v1', function($routes) {
         $routes->get('students', 'UserController::students'); 
         $routes->get('teachers', 'UserController::teachers');
     });
+
+    $routes->get('courses', 'CourseController::index');
 });

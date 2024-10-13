@@ -9,7 +9,7 @@ class Course extends Model
     protected $table            = 'courses';
     protected $primaryKey       = 'course_id'; 
     protected $useAutoIncrement = false; 
-    // protected $returnType       = 'array';
+    
     protected $returnType = 'App\Entities\CouseEntity';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
