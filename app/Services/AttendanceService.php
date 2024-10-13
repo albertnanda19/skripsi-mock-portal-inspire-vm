@@ -4,21 +4,38 @@ namespace App\Services;
 
 use App\Interfaces\AttendanceRepositoryInterface;
 use App\Interfaces\CourseRepositoryInterface;
+use App\Interfaces\RoleRepositoryInterface;
 use App\Entities\AttendanceEntity;
 
 class AttendanceService
 {
     protected $attendanceRepository;
     protected $courseRepository;
+    protected $roleRepository;
 
-    public function __construct(AttendanceRepositoryInterface $attendanceRepository, CourseRepositoryInterface $courseRepository)
-    {
+    public function __construct(
+        AttendanceRepositoryInterface $attendanceRepository,
+        CourseRepositoryInterface $courseRepository,
+        RoleRepositoryInterface $roleRepository
+    ) {
         $this->attendanceRepository = $attendanceRepository;
         $this->courseRepository = $courseRepository;
+        $this->roleRepository = $roleRepository;
     }
 
-    public function createAttendanceCode(string $courseId, int $sessionNumber, string $deadline): ?string
+    public function createAttendanceCode(string $courseId, int $sessionNumber, string $deadline, string $roleId): ?string
     {
+        // Validasi role_id
+        $role = $this->roleRepository->getRoleById($roleId);
+        if (!$role) {
+            throw new \Exception("Role ID tidak valid.");
+        }
+
+        // Cek jika role adalah mahasiswa
+        if ($role->role_name === 'mahasiswa') {
+            throw new \Exception("Mahasiswa tidak diizinkan untuk mengenerate kode presensi.");
+        }
+
         $existingAttendance = $this->attendanceRepository->getAttendanceByCourseAndSession($courseId, $sessionNumber);
         if ($existingAttendance) {
             throw new \Exception("Presensi untuk kursus dan sesi ini sudah ada.");

@@ -5,6 +5,9 @@ namespace App\Helpers;
 use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Signer\Rsa\Sha256;
+use Lcobucci\JWT\Token\UnencryptedToken;
+use Firebase\JWT\JWT as FirebaseJWT; // Menggunakan alias untuk menghindari konflik
+use Firebase\JWT\Key;
 
 class JWT
 {
@@ -68,6 +71,29 @@ class JWT
             return "Token valid";
         } catch (\Exception $e) {
             return "Token tidak valid";
+        }
+    }
+
+    public static function decodeAccessToken(string $token)
+    {
+        return self::decodeToken($token);
+    }
+
+    public static function decodeRefreshToken(string $token)
+    {
+        return self::decodeToken($token);
+    }
+
+    private static function decodeToken(string $token)
+    {
+        $key = file_get_contents(ROOTPATH . 'public.key'); // Asumsi menggunakan kunci publik untuk verifikasi
+
+        try {
+            // Decode token menggunakan library firebase/php-jwt
+            $decoded = FirebaseJWT::decode($token, new Key($key, 'RS256')); // Ganti 'HS256' dengan 'RS256' jika menggunakan RSA
+            return (array) $decoded;
+        } catch (\Exception $e) {
+            return null; // Gagal decode token
         }
     }
 }

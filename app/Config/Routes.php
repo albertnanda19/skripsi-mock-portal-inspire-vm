@@ -17,5 +17,8 @@ $routes->group('api/v1', function($routes) {
     });
 
     $routes->get('courses', 'CourseController::index');
-    $routes->post('attendance/generate-code', 'AttendanceController::generateCode'); // New endpoint
+
+    $routes->group('attendance', ['filter' => 'jwt'], function($routes) {
+        $routes->post('generate-code', 'AttendanceController::generateCode');
+    });
 });

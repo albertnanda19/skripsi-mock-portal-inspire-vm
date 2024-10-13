@@ -7,6 +7,8 @@ use App\Services\AttendanceService;
 use App\Repositories\AttendanceRepository;
 use App\Repositories\CourseRepository;
 use App\Helpers\Response;
+use App\Helpers\JWT;
+use App\Repositories\RoleRepository;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class AttendanceController extends BaseController
@@ -15,7 +17,7 @@ class AttendanceController extends BaseController
 
     public function __construct()
     {
-        $this->attendanceService = new AttendanceService(new AttendanceRepository(), new CourseRepository());
+        $this->attendanceService = new AttendanceService(new AttendanceRepository(), new CourseRepository(), new RoleRepository());
     }
 
     public function generateCode(): ResponseInterface
@@ -34,11 +36,24 @@ class AttendanceController extends BaseController
             return Response::send(400, 'Session number harus bertipe integer dan berada dalam rentang 1 hingga 16.');
         }
 
+        $authHeader = $this->request->getHeaderLine('Authorization');
+        $token = explode(' ', $authHeader)[1] ?? null;
+        $decodedToken = JWT::decodeAccessToken($token);
+        if (!$decodedToken) {
+            return Response::send(401, 'Token tidak valid atau tidak ada.');
+        }
+
+        $roleId = $decodedToken['role_id'] ?? null;
+        if (!$roleId) {
+            return Response::send(400, 'Role ID tidak ditemukan dalam token.');
+        }
+
         try {
             $code = $this->attendanceService->createAttendanceCode(
                 $requestData['course_id'],
                 $requestData['session_number'],
-                $requestData['deadline']
+                $requestData['deadline'],
+                $roleId
             );
             return Response::send(200, 'Berhasil menghasilkan kode presensi', [
                 'attendance_code' => $code,
