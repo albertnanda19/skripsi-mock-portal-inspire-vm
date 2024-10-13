@@ -27,4 +27,14 @@ class CourseRepository implements CourseRepositoryInterface
         $result = $query->getResult(CourseEntity::class);
         return count($result) > 0 ? $result[0] : null;
     }
+
+    public function getCourseByLecturerAndCourseId(string $userId, string $courseId): ?CourseEntity
+    {
+        $sql = "SELECT c.* FROM courses c
+                JOIN course_lecturers cl ON c.course_id = cl.course_id
+                WHERE cl.user_id = ? AND c.course_id = ?";
+        $query = $this->db->query($sql, [$userId, $courseId]);
+        $result = $query->getResult(CourseEntity::class);
+        return count($result) > 0 ? $result[0] : null;
+    }
 }

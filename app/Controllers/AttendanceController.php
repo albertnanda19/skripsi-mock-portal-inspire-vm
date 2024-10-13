@@ -43,9 +43,10 @@ class AttendanceController extends BaseController
             return Response::send(401, 'Token tidak valid atau tidak ada.');
         }
 
+        $userId = $decodedToken['id'] ?? null;
         $roleId = $decodedToken['role_id'] ?? null;
-        if (!$roleId) {
-            return Response::send(400, 'Role ID tidak ditemukan dalam token.');
+        if (!$roleId || !$userId) {
+            return Response::send(400, 'Role ID atau User ID tidak ditemukan dalam token.');
         }
 
         try {
@@ -53,7 +54,8 @@ class AttendanceController extends BaseController
                 $requestData['course_id'],
                 $requestData['session_number'],
                 $requestData['deadline'],
-                $roleId
+                $roleId,
+                $userId 
             );
             return Response::send(200, 'Berhasil menghasilkan kode presensi', [
                 'attendance_code' => $code,

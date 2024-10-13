@@ -23,7 +23,7 @@ class AttendanceService
         $this->roleRepository = $roleRepository;
     }
 
-    public function createAttendanceCode(string $courseId, int $sessionNumber, string $deadline, string $roleId): ?string
+    public function createAttendanceCode(string $courseId, int $sessionNumber, string $deadline, string $roleId, string $userId): ?string
     {
         $role = $this->roleRepository->getRoleById($roleId);
         if (!$role) {
@@ -34,16 +34,17 @@ class AttendanceService
             throw new \Exception("Mahasiswa tidak diizinkan untuk mengenerate kode presensi.", 409);
         }
 
+        // Validate if the user is the lecturer of the course
+        $course = $this->courseRepository->getCourseByLecturerAndCourseId($userId, $courseId);
+        if (!$course) {
+            throw new \Exception("User tidak terdaftar sebagai dosen untuk mata kuliah ini.");
+        }
+
         $existingAttendance = $this->attendanceRepository->getAttendanceByCourseAndSession($courseId, $sessionNumber);
         if ($existingAttendance) {
             throw new \Exception("Presensi untuk kursus dan sesi ini sudah ada.");
         }
         
-        $course = $this->courseRepository->getCourseById($courseId);
-        if (!$course) {
-            throw new \Exception("ID mata kuliah tidak valid.");
-        }
-
         $code = $this->generateAttendanceCode();
         $uuid = $this->generateUUID();
 
