@@ -60,7 +60,8 @@ class AttendanceController extends BaseController
                 'attendance_deadline' => $requestData['deadline']
             ]);
         } catch (\Exception $e) {
-            return Response::send(400, $e->getMessage());
+            $status = $e->getCode() == 409 ? 409 : 400;
+            return Response::send($status, $e->getMessage());
         }
     }
 
