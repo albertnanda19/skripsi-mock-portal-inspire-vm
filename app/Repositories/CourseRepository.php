@@ -20,4 +20,11 @@ class CourseRepository implements CourseRepositoryInterface
         $query = $this->db->query("SELECT course_id, course_code, course_name FROM courses");
         return $query->getResult(CourseEntity::class);
     }
+
+    public function getCourseById(string $courseId): ?CourseEntity
+    {
+        $query = $this->db->query("SELECT * FROM courses WHERE course_id = ?", [$courseId]);
+        $result = $query->getResult(CourseEntity::class);
+        return count($result) > 0 ? $result[0] : null;
+    }
 }
