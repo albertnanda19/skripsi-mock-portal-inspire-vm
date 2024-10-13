@@ -30,7 +30,7 @@ class CourseLecturerSeeder extends Seeder
                     'course_lecturer_id' => $this->generateUuid(),
                     'course_id' => $courses[$index]['course_id'],
                     'user_id' => $lecturer->user_id,
-                    'is_primary' => false 
+                    'is_primary' => true 
                 ]);
             }
         }
