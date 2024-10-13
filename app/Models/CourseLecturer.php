@@ -9,7 +9,7 @@ class CourseLecturer extends Model
     protected $table            = 'course_lecturers'; 
     protected $primaryKey       = 'course_lecturer_id'; 
     protected $useAutoIncrement = false; 
-    protected $returnType       = 'array';
+    protected $returnType = 'App\Entities\CourseLectureEntity';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = ['course_id', 'user_id', 'is_primary']; 

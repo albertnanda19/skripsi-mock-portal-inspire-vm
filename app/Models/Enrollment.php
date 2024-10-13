@@ -9,7 +9,7 @@ class Enrollment extends Model
     protected $table            = 'enrollments'; 
     protected $primaryKey       = 'enrollment_id'; 
     protected $useAutoIncrement = false; 
-    protected $returnType       = 'array';
+    protected $returnType = 'App\Entities\EnrollmentEntity';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = ['user_id', 'course_id']; 

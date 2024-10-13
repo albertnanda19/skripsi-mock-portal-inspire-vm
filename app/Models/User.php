@@ -9,7 +9,6 @@ class User extends Model
     protected $table            = 'users';
     protected $primaryKey       = 'user_id'; 
     protected $useAutoIncrement = false; 
-    // protected $returnType       = 'array';
     protected $returnType = 'App\Entities\UserEntity';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;

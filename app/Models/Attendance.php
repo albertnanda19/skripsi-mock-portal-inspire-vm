@@ -9,7 +9,7 @@ class Attendance extends Model
     protected $table            = 'attendances';
     protected $primaryKey       = 'attendance_id';
     protected $useAutoIncrement = false;
-    protected $returnType       = 'array';
+    protected $returnType = 'App\Entities\AttendanceEntity';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = ['course_id', 'session_number', 'code', 'deadline'];

@@ -9,7 +9,7 @@ class Grades extends Model
     protected $table            = 'grades'; 
     protected $primaryKey       = 'grade_id'; 
     protected $useAutoIncrement = false; 
-    protected $returnType       = 'array';
+    protected $returnType = 'App\Entities\GradesEntity';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
     protected $allowedFields    = ['enrollment_id', 'course_id', 'lecturer_id', 'grade_value', 'is_final']; // Updated allowed fields
